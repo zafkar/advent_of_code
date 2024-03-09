@@ -1,9 +1,11 @@
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use advent_of_code::load_data;
+use std::io::BufRead;
 use std::iter::zip;
 
+const ADVENT_NUM: &str = "9";
+
 fn main() {
-    let file = BufReader::new(File::open("input.txt").unwrap());
+    let file = load_data(ADVENT_NUM, "input.txt").unwrap();
     let mut results = vec![];
     for line in file.lines().map(|l| l.unwrap()) {
         let readings: Vec<i32> = line

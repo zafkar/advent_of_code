@@ -1,10 +1,11 @@
-use std::{
-    fs::File,
-    io::{BufRead, BufReader},
-};
+use std::io::BufRead;
+
+use advent_of_code::load_data;
+
+const ADVENT_NUM: &str = "1";
 
 fn main() {
-    let file = BufReader::new(File::open("input.txt").unwrap());
+    let file = load_data(ADVENT_NUM, "input.txt").unwrap();
     let total: u32 = file
         .lines()
         .map(|s| find_nums(s.unwrap()))

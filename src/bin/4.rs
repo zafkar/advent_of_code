@@ -1,9 +1,11 @@
-use std::io::{BufRead, BufReader};
+use advent_of_code::load_data;
+use std::io::BufRead;
 use std::str::FromStr;
 
+const ADVENT_NUM: &str = "4";
+
 fn main() {
-    let file = std::fs::File::open("full_pile.txt").expect("Couldn't open file");
-    let buffer = BufReader::new(file);
+    let buffer = load_data(ADVENT_NUM, "input.txt").unwrap();
     let mut cards = Vec::new();
     let mut stack = EffectStack::new();
     for line in buffer.lines() {

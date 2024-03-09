@@ -1,11 +1,11 @@
-use std::{
-    fs::File,
-    io::{BufRead, BufReader},
-    str::FromStr,
-};
+use advent_of_code::load_data;
+use std::io::BufRead;
+use std::str::FromStr;
+
+const ADVENT_NUM: &str = "2";
 
 fn main() {
-    let file = BufReader::new(File::open("input.txt").unwrap());
+    let file = load_data(ADVENT_NUM, "input.txt").unwrap();
     let mut all_games = vec![];
     for line in file.lines().map(|a| a.unwrap()) {
         println!("=> {line}");

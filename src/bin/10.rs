@@ -1,10 +1,10 @@
-use std::{
-    fs::File,
-    io::{BufRead, BufReader},
-};
+use advent_of_code::load_data;
+use std::io::BufRead;
+
+const ADVENT_NUM: &str = "10";
 
 fn main() {
-    let file = BufReader::new(File::open("input.txt").unwrap());
+    let file = load_data(ADVENT_NUM, "input.txt").unwrap();
     let maze = Maze::from(file.lines().map(|f| f.unwrap()).collect::<Vec<String>>());
     println!("Furthest Point => {}", maze.find_size_loop());
 }
