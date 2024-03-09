@@ -1,12 +1,11 @@
 use std::{
     fs::File,
     io::{BufRead, BufReader},
-    str::FromStr,
 };
 
 fn main() {
     let file = BufReader::new(File::open("input.txt").unwrap());
-    let mut maze = Maze::from(file.lines().map(|f| f.unwrap()).collect::<Vec<String>>());
+    let maze = Maze::from(file.lines().map(|f| f.unwrap()).collect::<Vec<String>>());
     println!("Furthest Point => {}", maze.find_size_loop());
 }
 
@@ -34,8 +33,6 @@ struct Maze {
     start_pos: Pos,
     maze: Vec<Vec<TileType>>,
 }
-
-struct ParseError;
 
 impl From<Vec<String>> for Maze {
     fn from(value: Vec<String>) -> Self {
@@ -136,7 +133,8 @@ impl Maze {
             (TileType::BendNW, TileType::BendSE, 0, 1) => true,
             (TileType::BendNW, TileType::BendSE, 1, 0) => true,
             (tile_1, tile_2, x_diff, y_diff) => {
-                //println!("{tile_1:?} and {tile_2:?} not connected {x_diff},{y_diff}");
+                #[cfg(debug_assertions)]
+                println!("{tile_1:?} and {tile_2:?} not connected {x_diff},{y_diff}");
                 false
             }
         }
@@ -154,14 +152,6 @@ impl Maze {
         let mut found = vec![];
         for (x, y) in ADJACENCY.iter() {
             if self.is_connected(pos.x, pos.y, pos.x + *x, pos.y + *y) {
-                /*println!(
-                    "Start adjacent to => {:?} at pos {:?}",
-                    self.get(pos.x + *x, pos.y + *y).unwrap(),
-                    Pos {
-                        x: pos.x + *x,
-                        y: pos.y + *y
-                    }
-                );*/
                 found.push(Pos {
                     x: pos.x + *x,
                     y: pos.y + *y,
@@ -174,16 +164,12 @@ impl Maze {
 
     fn step(&mut self) -> () {
         let possible_pos = self.find_connexion(self.pos);
-        let mut new_pos = Pos { x: 0, y: 0 };
-        if self.pos == self.old_pos {
-            new_pos = possible_pos.0;
-        } else {
-            if possible_pos.0 == self.old_pos {
-                new_pos = possible_pos.1;
-            } else {
-                new_pos = possible_pos.0;
-            }
-        }
+        let new_pos = match self.old_pos {
+            a if a == self.pos => possible_pos.0,
+            a if a == possible_pos.0 => possible_pos.1,
+            a if a == possible_pos.1 => possible_pos.0,
+            _ => unimplemented!("Should never be here"),
+        };
         self.old_pos = self.pos;
         self.pos = new_pos;
         println!("Moved to {new_pos:?}");

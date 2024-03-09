@@ -1,9 +1,5 @@
 use std::io::{BufRead, BufReader};
-
-use crate::{card::ScratchCard, effect::EffectStack};
-
-mod card;
-mod effect;
+use std::str::FromStr;
 
 fn main() {
     let file = std::fs::File::open("full_pile.txt").expect("Couldn't open file");
@@ -27,8 +23,6 @@ fn main() {
     let total: u32 = cards.into_iter().map(|c| c.get_points()).sum();
     println!("Total points : {}", total);
 }
-
-use crate::card::ScratchCard;
 
 #[derive(Debug, Clone, Copy)]
 struct Effect {
@@ -64,8 +58,6 @@ impl EffectStack {
         ()
     }
 }
-
-use std::str::FromStr;
 
 #[derive(Debug, Clone, Copy)]
 pub struct ScratchCard {
