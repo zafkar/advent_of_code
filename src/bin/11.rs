@@ -1,5 +1,9 @@
 use advent_of_code::load_data;
-use std::{fmt::Display, io::BufRead};
+use std::{
+    fmt::Display,
+    io::BufRead,
+    sync::mpsc::{channel, Sender},
+};
 
 const ADVENT_NUM: &str = "11";
 
@@ -11,18 +15,28 @@ fn main() {
     println!("{gs:?}",);
     println!("Search for all distances");
 
-    let mut acc = 0;
+    let pool = rayon::ThreadPoolBuilder::new()
+        .num_threads(8)
+        .build()
+        .unwrap();
+    let (tx, rx) = channel();
     for (i, p) in gs.iter().enumerate() {
-        for (io, o) in gs[i + 1..].iter().enumerate() {
-            let dist = space.get_actual_dist(*p, *o, 1_000_000);
-            acc += dist;
-            println!(
-                "Dist between {i} at {p:?} and {} at {o:?} is {}",
-                io + 1 + i,
-                dist
-            );
-        }
+        let tx_clone: Sender<u64> = tx.clone();
+        let p_clone = p.clone();
+        let space_clone = space.clone();
+        let work: Vec<Pos> = gs[i + 1..].iter().map(|p| *p).collect();
+        pool.spawn(move || {
+            for o in work {
+                tx_clone
+                    .send(space_clone.get_actual_dist(p_clone, o, 1_000_000))
+                    .unwrap();
+            }
+            println!("Slot {i} completed")
+        });
     }
+    drop(tx);
+
+    let acc = rx.iter().fold(0, |acc, v| acc + v);
 
     println!("Sum of shirtest path {acc}");
 }
@@ -34,11 +48,12 @@ struct Pos {
 }
 
 impl Pos {
-    fn get_dist(&self, other: Pos) -> usize {
+    fn _get_dist(&self, other: Pos) -> usize {
         self.x.abs_diff(other.x) + self.y.abs_diff(other.y)
     }
 }
 
+#[derive(Debug, Clone)]
 struct Space(Vec<String>);
 
 impl Display for Space {
@@ -84,9 +99,9 @@ impl Space {
         dist
     }
 
-    fn get_expanded(&self, n: usize) -> Space {
+    fn _get_expanded(&self, n: usize) -> Space {
         let height = self.get_height();
-        let width = self.get_width();
+        let width = self._get_width();
         let mut expanded_space: Vec<String> = vec![];
         for y in 0..height {
             let mut line = String::new();
@@ -116,7 +131,7 @@ impl Space {
         }
     }
 
-    fn get_width(&self) -> usize {
+    fn _get_width(&self) -> usize {
         self.0.get(0).unwrap().len()
     }
 
