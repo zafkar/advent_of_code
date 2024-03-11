@@ -39,7 +39,7 @@ fn main() {
             let tied: Vec<Number> = parsed_lines_nums[lowerbound..=higher_bound]
                 .iter()
                 .flatten()
-                .map(|n| *n)
+                .copied()
                 .filter(|n| n.is_tied(*sym))
                 .collect();
 
@@ -108,7 +108,7 @@ fn parse_line(s: &str, current_line_number: i32) -> (Vec<Symbol>, Vec<Number>) {
     let sym_regex = Regex::new(SYM_REGEX).unwrap();
     for m in sym_regex.find_iter(s) {
         result_sym.push(Symbol(
-            m.as_str().chars().nth(0).unwrap(),
+            m.as_str().chars().next().unwrap(),
             Pos {
                 y: current_line_number,
                 x: m.start() as i32,

@@ -7,7 +7,7 @@ const ADVENT_NUM: &str = "4";
 fn main() {
     let buffer = load_data(ADVENT_NUM, "input.txt").unwrap();
     let mut cards = Vec::new();
-    let mut stack = EffectStack::new();
+    let mut stack = EffectStack::default();
     for line in buffer.lines() {
         let card: ScratchCard = line
             .expect("Couldn't spearate lines")
@@ -32,17 +32,13 @@ struct Effect {
     power: u32,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct EffectStack(Vec<Effect>, u32);
 
 impl EffectStack {
-    pub fn new() -> EffectStack {
-        EffectStack(Vec::new(), 0)
-    }
-
     pub fn handle_card(&mut self, c: ScratchCard) {
         let power = self.clone().get_current() + 1;
-        self.1 = self.1 + power;
+        self.1 += power;
         println!("Instances => {}", power);
         self.0.push(Effect {
             time: c.get_num_match() + 1,
@@ -54,10 +50,9 @@ impl EffectStack {
         self.0.iter().map(|e| e.power).sum()
     }
 
-    pub fn step(&mut self) -> () {
-        self.0.iter_mut().for_each(|e| e.time = e.time - 1);
+    pub fn step(&mut self) {
+        self.0.iter_mut().for_each(|e| e.time -= 1);
         self.0.retain(|e| e.time != 0);
-        ()
     }
 }
 
@@ -129,7 +124,7 @@ impl ScratchCard {
     pub fn get_points(self) -> u32 {
         let winning = self.get_num_match();
         if winning > 0 {
-            1 << winning - 1
+            1 << (winning - 1)
         } else {
             0
         }

@@ -98,12 +98,7 @@ impl Maze {
             _ => return false,
         };
         //println!("{tile_1:?} at {x_1}, {y_1} and {tile_2:?} at {x_2}, {y_2}");
-        match (
-            tile_1,
-            tile_2,
-            x_1 as i32 - x_2 as i32,
-            y_1 as i32 - y_2 as i32,
-        ) {
+        match (tile_1, tile_2, x_1 - x_2, y_1 - y_2) {
             (TileType::StartingPos, TileType::Horizontal, a, 0) if a == 1 || a == -1 => true,
             (TileType::StartingPos, TileType::Vertical, 0, a) if a == 1 || a == -1 => true,
             (TileType::StartingPos, TileType::BendNE, 1, 0) => true,
@@ -159,10 +154,10 @@ impl Maze {
             }
         }
 
-        (*found.get(0).unwrap(), *found.get(1).unwrap())
+        (*found.first().unwrap(), *found.first().unwrap())
     }
 
-    fn step(&mut self) -> () {
+    fn step(&mut self) {
         let possible_pos = self.find_connexion(self.pos);
         let new_pos = match self.old_pos {
             a if a == self.pos => possible_pos.0,
@@ -193,7 +188,7 @@ impl Maze {
         size / 2 + size % 2
     }
 
-    fn display_current_tile(&self) -> () {
+    fn display_current_tile(&self) {
         println!("Current tile {:?}", self.get_pos(self.pos).unwrap());
     }
 }

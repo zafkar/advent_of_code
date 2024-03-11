@@ -22,9 +22,9 @@ fn main() {
     let (tx, rx) = channel();
     for (i, p) in gs.iter().enumerate() {
         let tx_clone: Sender<u64> = tx.clone();
-        let p_clone = p.clone();
+        let p_clone = *p;
         let space_clone = space.clone();
-        let work: Vec<Pos> = gs[i + 1..].iter().map(|p| *p).collect();
+        let work: Vec<Pos> = gs[i + 1..].to_vec();
         pool.spawn(move || {
             for o in work {
                 tx_clone
@@ -36,7 +36,7 @@ fn main() {
     }
     drop(tx);
 
-    let acc = rx.iter().fold(0, |acc, v| acc + v);
+    let acc = rx.iter().sum::<u64>();
 
     println!("Sum of shirtest path {acc}");
 }
@@ -70,9 +70,8 @@ impl Space {
         let mut galaxies = vec![];
         for (y, line) in self.0.iter().enumerate() {
             for (x, c) in line.char_indices() {
-                match c {
-                    '#' => galaxies.push(Pos { x, y }),
-                    _ => (),
+                if c == '#' {
+                    galaxies.push(Pos { x, y });
                 }
             }
         }
@@ -132,7 +131,7 @@ impl Space {
     }
 
     fn _get_width(&self) -> usize {
-        self.0.get(0).unwrap().len()
+        self.0.first().unwrap().len()
     }
 
     fn get_height(&self) -> usize {

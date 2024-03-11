@@ -39,7 +39,7 @@ fn main() {
     let mut threads = vec![];
     for (index, seed_pair) in _seeds.chunks_exact(2).enumerate() {
         let (seed_start, seed_len) = match seed_pair {
-            [seed, seed_len] => (seed.clone(), seed_len.clone()),
+            [seed, seed_len] => (*seed, *seed_len),
             _ => panic!("Error while depariring seed input"),
         };
         println!("\n{index}/{}", _seeds.len() / 2);

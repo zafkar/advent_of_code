@@ -22,15 +22,15 @@ fn main() {
     println!("Final => {total}");
 }
 
-fn descent(nums: &Vec<i32>) -> i32 {
+fn descent(nums: &[i32]) -> i32 {
     let next_step: Vec<i32> = zip(nums[1..].iter(), nums[..nums.len() - 1].iter())
         .map(|(a, b)| a - b)
         .collect();
     println!("{:?}", next_step);
-    if next_step.iter().fold(0, |a, e| a + e) != 0i32 {
+    if next_step.iter().sum::<i32>() != 0i32 {
         let d_result = descent(&next_step);
         let new_num = match next_step.first() {
-            Some(a) => a.clone(),
+            Some(a) => *a,
             _ => 0,
         };
         println!("step => {new_num}, {d_result},",);

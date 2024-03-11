@@ -146,8 +146,8 @@ impl PartialEq for Hand {
 impl Eq for Hand {}
 
 impl Hand {
-    fn sort_hand(&mut self) -> () {
-        self.cards.sort()
+    fn sort_hand(&mut self) {
+        self.cards.sort();
     }
 
     fn get_hand_type(self) -> HandType {
@@ -208,26 +208,26 @@ impl Hand {
         }
         match (num_pair, num_three, joker_chain_len) {
             (a, 0, 1) if a > 1 => HandType::OnePair,
-            (1, 0, _) => match value_pair.get(0) {
+            (1, 0, _) => match value_pair.first() {
                 Some(_) => HandType::OnePair,
                 _ => unimplemented!("Error while one pair"),
             },
             (0, 1, _) => HandType::ThreeOfAKind,
             (2, 1, _) => HandType::ThreeOfAKind,
-            (1, 1, _) => match value_pair.get(0) {
+            (1, 1, _) => match value_pair.first() {
                 Some(_) => HandType::FullHouse,
                 _ => unimplemented!("Error while one pair"),
             },
             (0, 3, _) => HandType::ThreeOfAKind,
             (_, a, _) if a > 1 => HandType::FullHouse,
-            (a, 0, _) if a > 1 => match (value_pair.get(0), value_pair.get(1)) {
+            (a, 0, _) if a > 1 => match (value_pair.first(), value_pair.get(1)) {
                 (Some(_), Some(_)) => HandType::TwoPair,
                 _ => unimplemented!("Error while outputting 2 pairs"),
             },
             _ => {
-                let mut tmp = self.clone();
+                let mut tmp = self;
                 tmp.sort_hand();
-                if let Some(_) = tmp.cards.last() {
+                if tmp.cards.last().is_some() {
                     HandType::HighCard
                 } else {
                     unimplemented!("Can't work with empty hand");
@@ -237,7 +237,7 @@ impl Hand {
     }
 
     fn get_chains(self) -> Vec<(Card, u8)> {
-        let mut tmp = self.clone();
+        let mut tmp = self;
         tmp.sort_hand();
 
         let mut chains: Vec<(Card, u8)> = Vec::new();
