@@ -1,10 +1,11 @@
 use advent_of_code::load_data;
-use std::{io::BufRead, str::FromStr};
+use itertools::Itertools;
+use std::{io::BufRead, iter::zip, str::FromStr};
 
 const ADVENT_NUM: &str = "12";
 
 fn main() {
-    let file = load_data(ADVENT_NUM, "input.txt").unwrap();
+    let file = load_data(ADVENT_NUM, "sample.txt").unwrap();
     let mut acc = 0;
     for line in file.lines().map(|f| f.unwrap()) {
         let n: Nonogram = line.parse().unwrap();
@@ -43,13 +44,6 @@ impl FromStr for Nonogram {
     }
 }
 
-fn add_to_all(mut list: Vec<String>, ch: char) -> Vec<String> {
-    for i in list.iter_mut() {
-        i.push(ch);
-    }
-    list
-}
-
 impl Nonogram {
     fn is_valid(&self) -> bool {
         let rebuilt_hint = self.rebuild_hint();
@@ -68,23 +62,60 @@ impl Nonogram {
         true
     }
 
+    fn equivalent(&self, other: &Nonogram) -> bool {
+        for (a, b) in zip(self.line.chars(), other.line.chars()) {
+            match (a, b) {
+                ('.', '#') | ('#', '.') => return false,
+                _ => (),
+            }
+        }
+        true
+    }
+
     fn is_empty(&self) -> bool {
         self.line.is_empty()
     }
 
+    fn hint_sum(&self) -> u32 {
+        self.hint.iter().sum()
+    }
+
     fn generate_all_possibilities(&self) -> Vec<Nonogram> {
-        let mut all_lines: Vec<String> = vec!["".to_string()];
-        for c in self.line.chars() {
-            match c {
-                '#' => all_lines = add_to_all(all_lines, '#'),
-                '.' => all_lines = add_to_all(all_lines, '.'),
-                '?' => {
-                    let dup = add_to_all(all_lines.clone(), '#');
-                    all_lines = add_to_all(all_lines, '.');
-                    all_lines.extend(dup);
+        let mut all_lines: Vec<String> = vec![];
+        let gaps =
+            match self.line.len() as i32 - self.hint_sum() as i32 - self.hint.len() as i32 + 1 {
+                a if a < 0 => return vec![],
+                a => a as u32,
+            };
+
+        let positions_possibilities = gaps + self.hint.len() as u32;
+        for comb in (0..positions_possibilities).combinations(self.hint.len()) {
+            let mut current_offset = 0;
+            let mut current_line = String::new();
+            for (pos, hint) in zip(comb, self.hint.clone()) {
+                let num_of_gap_to_add = pos - current_offset;
+                for _ in 0..num_of_gap_to_add {
+                    current_line.push('.')
                 }
-                _ => (),
+                current_offset += num_of_gap_to_add + 1;
+
+                for _ in 0..hint {
+                    current_line.push('#');
+                }
+                current_line.push('.');
             }
+            current_line = current_line[..current_line.len() - 1].to_string();
+            let padding = match self.line.len() as i32 - current_line.len() as i32 {
+                a if a < 0 => {
+                    println!("{} => {}", self.line, current_line);
+                    unimplemented!("KO");
+                }
+                a => a as u32,
+            };
+            for _ in 0..padding {
+                current_line.push('.');
+            }
+            all_lines.push(current_line);
         }
 
         all_lines
@@ -93,7 +124,7 @@ impl Nonogram {
                 hint: self.hint.clone(),
                 line: p.to_string(),
             })
-            .filter(|n| n.is_valid())
+            .filter(|n| n.equivalent(self))
             .collect()
     }
 
