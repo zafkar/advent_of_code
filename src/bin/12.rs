@@ -68,6 +68,10 @@ impl Nonogram {
         true
     }
 
+    fn is_empty(&self) -> bool {
+        self.line.is_empty()
+    }
+
     fn generate_all_possibilities(&self) -> Vec<Nonogram> {
         let mut all_lines: Vec<String> = vec!["".to_string()];
         for c in self.line.chars() {
@@ -92,43 +96,6 @@ impl Nonogram {
             .filter(|n| n.is_valid())
             .collect()
     }
-
-    /*fn solve_from_start(&self) -> Nonogram {
-        let mut current_hint_index = 0;
-        let mut current_hint_len = 0;
-        let mut is_in_group = false;
-        let mut new_line = String::new();
-        for c in self.line.chars() {
-            match (c, is_in_group) {
-                ('#', false) => {
-                    current_hint_len += 1;
-                    is_in_group = true;
-                    new_line.push(c);
-                }
-                ('#', true) => {
-                    current_hint_index += 1;
-                    new_line.push(c);
-                }
-                ('.', true) => {
-                    is_in_group = false;
-                    current_hint_len = 0;
-                    current_hint_index += 1;
-                    new_line.push(c);
-                }
-                ('.', false) => new_line.push(c),
-                ('?', true) => {
-                    if let Some(current_hint) = self.hint.get(current_hint_index) {
-
-                    } else {
-                        unimplemented!("Went too far in the hint while trying to solve");
-                    }
-                }
-
-                _ => unimplemented!("Error while simplifying"),
-            }
-        }
-        Nonogram { line: (), hint: () }
-    }*/
 
     fn rebuild_hint(&self) -> Vec<u32> {
         let mut hint = vec![];
