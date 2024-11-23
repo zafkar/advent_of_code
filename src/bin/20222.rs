@@ -58,15 +58,15 @@ impl FromStr for Hand {
 impl Hand {
     fn score(&self) -> u32 {
         match (self.0, self.1) {
-            (RPS::Rock, RPS::Rock) => 4,
-            (RPS::Paper, RPS::Paper) => 5,
-            (RPS::Scissors, RPS::Scissors) => 6,
-            (RPS::Rock, RPS::Paper) => 8,
-            (RPS::Paper, RPS::Scissors) => 9,
-            (RPS::Scissors, RPS::Rock) => 7,
-            (RPS::Rock, RPS::Scissors) => 3,
-            (RPS::Paper, RPS::Rock) => 1,
-            (RPS::Scissors, RPS::Paper) => 2,
+            (RPS::Rock, RPS::Rock) => 0 + 3,
+            (RPS::Paper, RPS::Paper) => 3 + 2,
+            (RPS::Scissors, RPS::Scissors) => 6 + 1,
+            (RPS::Rock, RPS::Paper) => 3 + 1,
+            (RPS::Paper, RPS::Scissors) => 6 + 3,
+            (RPS::Scissors, RPS::Rock) => 0 + 2,
+            (RPS::Rock, RPS::Scissors) => 6 + 2,
+            (RPS::Paper, RPS::Rock) => 0 + 1,
+            (RPS::Scissors, RPS::Paper) => 3 + 3,
         }
     }
 }
