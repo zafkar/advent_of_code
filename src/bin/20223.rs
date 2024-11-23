@@ -1,6 +1,6 @@
 use advent_of_code::load_data;
 use itertools::Itertools;
-use std::{error::Error, fmt::Display, io::BufRead, str::FromStr, time::Instant};
+use std::{error::Error, fmt::Display, io::BufRead, iter::zip, str::FromStr, time::Instant};
 
 const ADVENT_NUM: &str = "20223";
 
@@ -24,29 +24,37 @@ fn main() -> Result<(), Box<dyn Error>> {
     //         char2priority(rucksack.find_pair().unwrap())
     //     );
     // }
-    let result: u32 = file
+    let rucksacks: Vec<Rucksack> = file
         .lines()
-        .map(|line| {
-            line.unwrap()
-                .parse::<Rucksack>()
-                .unwrap()
-                .find_pair()
-                .unwrap()
-        })
-        .map(|c| char2priority(c))
-        .sum();
+        .map(|line| line.unwrap().parse::<Rucksack>().unwrap())
+        .collect();
+
+    let result: u32 = zip(
+        rucksacks.iter().step_by(3),
+        zip(
+            rucksacks.iter().skip(1).step_by(3),
+            rucksacks.iter().skip(2).step_by(3),
+        ),
+    )
+    .map(|(a, (b, c))| a.find_badge(b, c).unwrap())
+    .map(|badge| char2priority(badge))
+    .sum();
+
     println!("{result}");
     println!("End => {:?}", start.elapsed());
     Ok(())
 }
 
 #[derive(Debug)]
-struct Rucksack(String, String);
+struct Rucksack(String);
 
 impl Rucksack {
-    fn find_pair(&self) -> Option<char> {
-        for l in self.0.chars().unique() {
-            if self.1.contains(l) {
+    fn find_badge(&self, other_a: &Rucksack, other_b: &Rucksack) -> Option<char> {
+        for l in self.0.chars() {
+            if !other_a.0.contains(l) {
+                continue;
+            }
+            if other_b.0.contains(l) {
                 return Some(l);
             }
         }
@@ -57,8 +65,7 @@ impl Rucksack {
 impl FromStr for Rucksack {
     type Err = GenericParseError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let (left, right) = s.split_at(s.len() / 2);
-        Ok(Rucksack(left.to_string(), right.to_string()))
+        Ok(Rucksack(s.to_string()))
     }
 }
 
