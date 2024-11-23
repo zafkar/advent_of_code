@@ -1,20 +1,32 @@
 use advent_of_code::load_data;
 use itertools::{Combinations, Itertools};
-use std::{io::BufRead, iter::zip, ops::Range, str::FromStr};
+use std::{io::BufRead, iter::zip, ops::Range, str::FromStr, sync::mpsc::channel};
 
 const ADVENT_NUM: &str = "12";
 
 fn main() {
     let file = load_data(ADVENT_NUM, "sample.txt").unwrap();
-    let mut acc = 0;
+    let pool = rayon::ThreadPoolBuilder::new()
+        .num_threads(8)
+        .build()
+        .unwrap();
+    let (tx, rx) = channel();
     for line in file.lines().map(|f| f.unwrap()) {
-        let n: Nonogram = line.parse::<Nonogram>().unwrap().unfold();
-        let count = n.possibilities_iter().unwrap().count();
-        acc += count;
-        println!("{n:?} => {count}");
-        println!();
+        let unfolded_nonogram: Nonogram = line.parse::<Nonogram>().unwrap().unfold();
+        let new_tx = tx.clone();
+        pool.spawn(move || {
+            let mut total = 0;
+            for n in unfolded_nonogram.possibilities_iter().unwrap() {
+                new_tx.send(n).unwrap();
+                total += 1;
+            }
+            println!("{unfolded_nonogram:?} => {total}");
+        });
     }
-    println!("Total {acc}");
+    drop(tx);
+
+    let count = rx.iter().count();
+    println!("Total {count}");
 }
 
 #[derive(Debug, Clone)]
@@ -103,9 +115,10 @@ impl Nonogram {
                 a => a as u32,
             };
         let positions_possibilities = gaps + self.hint.len() as u32;
-        let combin = (0..positions_possibilities).combinations(self.hint.len());
-        println!("{:?}", combin);
-        Some(NonogramPossibilitiesIterator(self.clone(), combin))
+        Some(NonogramPossibilitiesIterator(
+            self.clone(),
+            (0..positions_possibilities).combinations(self.hint.len()),
+        ))
     }
 
     fn generate_all_possibilities(&self) -> Vec<Nonogram> {
