@@ -43,6 +43,7 @@ impl FromStr for Row {
 }
 
 impl Row {
+    #[allow(dead_code)]
     fn is_fully_overlapped(&self) -> bool {
         self.0.contain(&self.1) || self.1.contain(&self.0)
     }
