@@ -1,12 +1,7 @@
 use advent_of_code::load_data;
 use itertools::Itertools;
 use regex::Regex;
-use std::{
-    error::Error,
-    fmt::Display,
-    io::{BufRead, Read},
-    str::FromStr,
-};
+use std::{error::Error, fmt::Display, io::Read, str::FromStr};
 
 const ADVENT_NUM: &str = "20225";
 
@@ -31,7 +26,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     for cranemove in crane_moves {
         println!("################");
         println!("{cranemove:?}");
-        stacks.cranemove_9001(&cranemove);
+        stacks.cranemove_9001(&cranemove)?;
         println!("{stacks}");
     }
 
@@ -82,24 +77,25 @@ impl Stacks {
         self.0.iter().map(|s| s.len()).max()
     }
 
-    fn cranemove(&mut self, cranemove: &CraneMove) -> Result<(), ()> {
+    #[allow(dead_code)]
+    fn cranemove(&mut self, cranemove: &CraneMove) -> Result<(), String> {
         for _ in 0..cranemove.0 {
             if let Some(c) = self.0[cranemove.1 - 1].pop() {
                 self.0[cranemove.2 - 1].push(c);
             } else {
-                return Err(());
+                return Err("Already empty stack".to_string());
             }
         }
         Ok(())
     }
 
-    fn cranemove_9001(&mut self, cranemove: &CraneMove) -> Result<(), ()> {
+    fn cranemove_9001(&mut self, cranemove: &CraneMove) -> Result<(), String> {
         let mut tmp = Vec::new();
         for _ in 0..cranemove.0 {
             if let Some(c) = self.0[cranemove.1 - 1].pop() {
                 tmp.push(c);
             } else {
-                return Err(());
+                return Err("Already empty stack".to_string());
             }
         }
         for c in tmp.iter().rev() {
