@@ -31,7 +31,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     for cranemove in crane_moves {
         println!("################");
         println!("{cranemove:?}");
-        stacks.cranemove(&cranemove);
+        stacks.cranemove_9001(&cranemove);
         println!("{stacks}");
     }
 
@@ -90,6 +90,22 @@ impl Stacks {
                 return Err(());
             }
         }
+        Ok(())
+    }
+
+    fn cranemove_9001(&mut self, cranemove: &CraneMove) -> Result<(), ()> {
+        let mut tmp = Vec::new();
+        for _ in 0..cranemove.0 {
+            if let Some(c) = self.0[cranemove.1 - 1].pop() {
+                tmp.push(c);
+            } else {
+                return Err(());
+            }
+        }
+        for c in tmp.iter().rev() {
+            self.0[cranemove.2 - 1].push(*c);
+        }
+
         Ok(())
     }
 
