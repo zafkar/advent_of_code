@@ -6,18 +6,22 @@ const ADVENT_NUM: &str = "20224";
 
 fn main() -> Result<(), Box<dyn Error>> {
     let file = load_data(ADVENT_NUM, "input.txt")?;
-    // for line in file.lines() {
-    //     let row: Row = line?.parse()?;
-    //     println!("{row:?}, Overlapped? {:?}", row.is_overlapped());
-    // }
-    let result: usize = file
-        .lines()
-        .map(|line| line.unwrap())
-        .map(|line| line.parse::<Row>().unwrap())
-        .map(|r| r.is_overlapped())
-        .filter(|r| *r)
-        .count();
-    println!("Result => {result}");
+    let mut count: u32 = 0;
+    for line in file.lines() {
+        let row: Row = line?.parse()?;
+        println!("{row:?}, Overlapped? {:?}", row.is_overlapped());
+        if row.is_overlapped() {
+            count += 1;
+        }
+    }
+    // let result: usize = file
+    //     .lines()
+    //     .map(|line| line.unwrap())
+    //     .map(|line| line.parse::<Row>().unwrap())
+    //     .map(|r| r.is_fully_overlapped())
+    //     .filter(|r| *r)
+    //     .count();
+    println!("Result => {count}");
     Ok(())
 }
 
@@ -39,14 +43,22 @@ impl FromStr for Row {
 }
 
 impl Row {
-    fn is_overlapped(&self) -> bool {
+    fn is_fully_overlapped(&self) -> bool {
         self.0.contain(&self.1) || self.1.contain(&self.0)
+    }
+
+    fn is_overlapped(&self) -> bool {
+        self.0.overlap(&self.1)
     }
 }
 
 impl Pair {
     fn contain(&self, other: &Pair) -> bool {
         self.0 <= other.0 && self.1 >= other.1
+    }
+
+    fn overlap(&self, other: &Pair) -> bool {
+        !(self.0 > other.1 || self.1 < other.0)
     }
 }
 
