@@ -17,7 +17,7 @@ struct Row;
 
 impl FromStr for Row {
     type Err = GenericParseError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    fn from_str(_: &str) -> Result<Self, Self::Err> {
         Ok(Row)
     }
 }

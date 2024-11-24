@@ -1,9 +1,5 @@
 use advent_of_code::load_data;
-use std::{
-    error::Error,
-    fmt::Display,
-    io::{stdin, BufRead},
-};
+use std::{error::Error, fmt::Display, io::BufRead};
 
 const ADVENT_NUM: &str = "13";
 

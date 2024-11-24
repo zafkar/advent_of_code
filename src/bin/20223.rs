@@ -1,5 +1,4 @@
 use advent_of_code::load_data;
-use itertools::Itertools;
 use std::{error::Error, fmt::Display, io::BufRead, iter::zip, str::FromStr, time::Instant};
 
 const ADVENT_NUM: &str = "20223";

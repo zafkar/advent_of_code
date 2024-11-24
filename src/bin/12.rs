@@ -55,6 +55,7 @@ impl FromStr for Nonogram {
     }
 }
 
+#[allow(dead_code)]
 impl Nonogram {
     fn unfold(&self) -> Nonogram {
         let mut new_line = String::new();
