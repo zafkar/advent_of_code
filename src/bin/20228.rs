@@ -5,7 +5,7 @@ use std::{error::Error, fmt::Display, io::Read, iter::zip, str::FromStr};
 const ADVENT_NUM: &str = "20228";
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let mut file = load_data(ADVENT_NUM, "sample.txt")?;
+    let mut file = load_data(ADVENT_NUM, "input.txt")?;
     let mut text_log = String::new();
     file.read_to_string(&mut text_log)?;
 
@@ -14,8 +14,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("{grid}");
     let result = (0..grid.0)
         .flat_map(|x| (0..grid.1).map(move |y| (x, y)))
-        .filter(|(x, y)| grid.is_visible(*x, *y))
-        .count();
+        .map(|(x, y)| grid.score(x, y))
+        .max()
+        .unwrap();
 
     println!("{result}");
 
@@ -51,17 +52,42 @@ impl Grid {
                 .min()
                 .unwrap_or(&-1)
     }
+
+    fn score(&self, x: usize, y: usize) -> u32 {
+        let target_size = self.get(x, y);
+
+        let score_east = (x + 1..self.0)
+            .map(|i| self.get(i, y))
+            .take_while_inclusive(|h| target_size > *h)
+            .count();
+        let score_west = (0..x)
+            .rev()
+            .map(|i| self.get(i, y))
+            .take_while_inclusive(|h| target_size > *h)
+            .count();
+        let score_south = (y + 1..self.1)
+            .map(|i| self.get(x, i))
+            .take_while_inclusive(|h| target_size > *h)
+            .count();
+        let score_north = (0..y)
+            .rev()
+            .map(|i| self.get(x, i))
+            .take_while_inclusive(|h| target_size > *h)
+            .count();
+        // println!(
+        //     "({x},{y}) => E({score_east}), N({score_north}), W({score_west}), S({score_south})"
+        // );
+        (score_east * score_north * score_south * score_west)
+            .try_into()
+            .unwrap_or(0)
+    }
 }
 
 impl Display for Grid {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for y in 0..self.1 {
             for x in 0..self.0 {
-                let c = match self.is_visible(x, y) {
-                    true => '#',
-                    false => '.',
-                };
-                write!(f, "{}", c)?;
+                write!(f, "{:3}|", self.score(x, y))?;
             }
             writeln!(f, "")?;
         }
