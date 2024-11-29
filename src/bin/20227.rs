@@ -4,12 +4,23 @@ use std::{cell::RefCell, error::Error, fmt::Display, io::Read, rc::Rc, str::From
 const ADVENT_NUM: &str = "20227";
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let mut file = load_data(ADVENT_NUM, "sample.txt")?;
+    let mut file = load_data(ADVENT_NUM, "input.txt")?;
     let mut text_log = String::new();
     file.read_to_string(&mut text_log)?;
 
     let root: Dir = text_log.parse()?;
     println!("{root}");
+
+    println!(
+        "{:?}",
+        root.all_dirs()
+            .iter()
+            .map(|f| f.borrow().size())
+            .filter(|f| *f >= 8_008_081)
+            .collect::<Vec<u64>>()
+            .iter()
+            .min()
+    );
     Ok(())
 }
 
@@ -42,6 +53,18 @@ impl Dir {
 
             for dir in current.borrow().1.iter() {
                 stack.push(dir.clone());
+            }
+        }
+        result
+    }
+
+    pub fn all_dirs(&self) -> Vec<Rc<RefCell<Dir>>> {
+        let mut result = vec![Rc::new(RefCell::new(self.clone()))];
+        let mut stack = vec![Rc::new(RefCell::new(self.clone()))];
+        while let Some(current) = stack.pop() {
+            for dir in current.borrow().1.iter() {
+                stack.push(dir.clone());
+                result.push(dir.clone());
             }
         }
         result
