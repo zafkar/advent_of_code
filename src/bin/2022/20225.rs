@@ -3,7 +3,7 @@ use itertools::Itertools;
 use regex::Regex;
 use std::{error::Error, fmt::Display, io::Read, str::FromStr};
 
-const ADVENT_NUM: &str = "20225";
+const ADVENT_NUM: &str = "2022/5";
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut file = load_data(ADVENT_NUM, "input.txt")?;

@@ -2,7 +2,7 @@ use advent_of_code::load_data;
 use regex::Regex;
 use std::{error::Error, fmt::Display, io::BufRead, str::FromStr};
 
-const ADVENT_NUM: &str = "15";
+const ADVENT_NUM: &str = "2023/15";
 
 fn main() -> Result<(), Box<dyn Error>> {
     let file = load_data(ADVENT_NUM, "sample.txt")?;

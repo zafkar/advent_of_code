@@ -5,7 +5,7 @@ use std::{
     sync::mpsc::{channel, Sender},
 };
 
-const ADVENT_NUM: &str = "11";
+const ADVENT_NUM: &str = "2023/11";
 
 fn main() {
     let file = load_data(ADVENT_NUM, "input.txt").unwrap();

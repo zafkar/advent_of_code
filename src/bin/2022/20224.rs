@@ -2,7 +2,7 @@ use advent_of_code::load_data;
 use itertools::Itertools;
 use std::{error::Error, fmt::Display, io::BufRead, num::ParseIntError, str::FromStr};
 
-const ADVENT_NUM: &str = "20224";
+const ADVENT_NUM: &str = "2022/4";
 
 fn main() -> Result<(), Box<dyn Error>> {
     let file = load_data(ADVENT_NUM, "input.txt")?;

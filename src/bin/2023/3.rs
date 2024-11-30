@@ -2,7 +2,7 @@ use advent_of_code::load_data;
 use regex::Regex;
 use std::io::BufRead;
 
-const ADVENT_NUM: &str = "3";
+const ADVENT_NUM: &str = "2023/3";
 
 fn main() {
     let file = load_data(ADVENT_NUM, "input.txt").unwrap();

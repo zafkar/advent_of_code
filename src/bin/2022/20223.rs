@@ -1,7 +1,7 @@
 use advent_of_code::load_data;
 use std::{error::Error, fmt::Display, io::BufRead, iter::zip, str::FromStr, time::Instant};
 
-const ADVENT_NUM: &str = "20223";
+const ADVENT_NUM: &str = "2022/3";
 
 fn char2priority(c: char) -> u32 {
     let integer: u32 = c.into();

@@ -2,7 +2,7 @@ use advent_of_code::load_data;
 use std::io::BufRead;
 use std::str::FromStr;
 
-const ADVENT_NUM: &str = "2";
+const ADVENT_NUM: &str = "2023/2";
 
 fn main() {
     let file = load_data(ADVENT_NUM, "input.txt").unwrap();

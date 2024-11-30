@@ -2,7 +2,7 @@ use advent_of_code::load_data;
 use std::io::BufRead;
 use std::iter::zip;
 
-const ADVENT_NUM: &str = "9";
+const ADVENT_NUM: &str = "2023/9";
 
 fn main() {
     let file = load_data(ADVENT_NUM, "input.txt").unwrap();

@@ -7,7 +7,7 @@ use std::{
     str::FromStr,
 };
 
-const ADVENT_NUM: &str = "20226";
+const ADVENT_NUM: &str = "2022/6";
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut file = load_data(ADVENT_NUM, "sample.txt")?;

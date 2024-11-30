@@ -2,7 +2,7 @@ use advent_of_code::load_data;
 use itertools::{max, Itertools};
 use std::{error::Error, fmt::Display, io::Read, iter::zip, str::FromStr};
 
-const ADVENT_NUM: &str = "20228";
+const ADVENT_NUM: &str = "2022/8";
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut file = load_data(ADVENT_NUM, "input.txt")?;
@@ -87,7 +87,7 @@ impl Display for Grid {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for y in 0..self.1 {
             for x in 0..self.0 {
-                write!(f, "{:3}|", self.score(x, y))?;
+                write!(f, "{};", self.score(x, y))?;
             }
             writeln!(f, "")?;
         }

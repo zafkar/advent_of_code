@@ -1,7 +1,7 @@
 use advent_of_code::load_data;
 use std::{error::Error, fmt::Display, io::BufRead, str::FromStr};
 
-const ADVENT_NUM: &str = "20222";
+const ADVENT_NUM: &str = "2022/2";
 
 fn main() -> Result<(), Box<dyn Error>> {
     let file = load_data(ADVENT_NUM, "input.txt")?;

@@ -2,7 +2,7 @@ use advent_of_code::load_data;
 use itertools::{Combinations, Itertools};
 use std::{io::BufRead, iter::zip, ops::Range, str::FromStr, sync::mpsc::channel};
 
-const ADVENT_NUM: &str = "12";
+const ADVENT_NUM: &str = "2023/12";
 
 fn main() {
     let file = load_data(ADVENT_NUM, "sample.txt").unwrap();

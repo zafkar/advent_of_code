@@ -1,7 +1,7 @@
 use advent_of_code::load_data;
 use std::{cell::RefCell, error::Error, fmt::Display, io::Read, rc::Rc, str::FromStr};
 
-const ADVENT_NUM: &str = "20227";
+const ADVENT_NUM: &str = "2022/7";
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut file = load_data(ADVENT_NUM, "input.txt")?;

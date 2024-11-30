@@ -1,7 +1,7 @@
 use advent_of_code::load_data;
 use std::{io::BufRead, str::FromStr, sync::mpsc::channel, thread::spawn};
 
-const ADVENT_NUM: &str = "5";
+const ADVENT_NUM: &str = "2023/5";
 
 fn main() {
     let mut file = load_data(ADVENT_NUM, "input.txt").unwrap();

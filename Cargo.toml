@@ -9,3 +9,84 @@ edition = "2021"
 itertools = "0.12.1"
 rayon = "1.9.0"
 regex = "1.10.3"
+
+
+[[bin]]
+name = "2022_1"
+path = "src/bin/2022/20221.rs"
+
+[[bin]]
+name = "2022_2"
+path = "src/bin/2022/20222.rs"
+
+[[bin]]
+name = "2022_3"
+path = "src/bin/2022/20223.rs"
+
+[[bin]]
+name = "2022_4"
+path = "src/bin/2022/20224.rs"
+
+[[bin]]
+name = "2022_5"
+path = "src/bin/2022/20225.rs"
+
+[[bin]]
+name = "2022_6"
+path = "src/bin/2022/20226.rs"
+
+[[bin]]
+name = "2022_7"
+path = "src/bin/2022/20227.rs"
+
+[[bin]]
+name = "2022_8"
+path = "src/bin/2022/8.rs"
+
+[[bin]]
+name = "2023_1"
+path = "src/bin/2023/1.rs"
+
+[[bin]]
+name = "2023_2"
+path = "src/bin/2023/2.rs"
+
+[[bin]]
+name = "2023_3"
+path = "src/bin/2023/3.rs"
+
+[[bin]]
+name = "2023_4"
+path = "src/bin/2023/4.rs"
+
+[[bin]]
+name = "2023_5"
+path = "src/bin/2023/5.rs"
+
+[[bin]]
+name = "2023_7"
+path = "src/bin/2023/7.rs"
+
+[[bin]]
+name = "2023_9"
+path = "src/bin/2023/9.rs"
+
+[[bin]]
+name = "2023_10"
+path = "src/bin/2023/10.rs"
+
+[[bin]]
+name = "2023_11"
+path = "src/bin/2023/11.rs"
+
+[[bin]]
+name = "2023_12"
+path = "src/bin/2023/12.rs"
+
+[[bin]]
+name = "2023_13"
+path = "src/bin/2023/13.rs"
+
+[[bin]]
+name = "2023_15"
+path = "src/bin/2023/15.rs"

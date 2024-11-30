@@ -1,7 +1,7 @@
 use advent_of_code::load_data;
 use std::{cmp::Ordering, io::BufRead, iter::zip, str::FromStr};
 
-const ADVENT_NUM: &str = "7";
+const ADVENT_NUM: &str = "2023/7";
 
 fn main() {
     let file = load_data(ADVENT_NUM, "input.txt").unwrap();
