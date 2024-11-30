@@ -13,7 +13,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 .split_ascii_whitespace()
                 .filter(|s| !s.is_empty())
                 .skip(1)
-                .map(|s| s.parse::<u32>().unwrap())
+                .map(|s| s.parse::<u64>().unwrap())
                 .collect_vec()
         })
         .collect_vec();
@@ -32,18 +32,18 @@ fn main() -> Result<(), Box<dyn Error>> {
 }
 
 #[derive(Debug)]
-struct Race(u32);
+struct Race(u64);
 
 impl Race {
-    fn new(time: u32) -> Race {
+    fn new(time: u64) -> Race {
         Race(time)
     }
 
-    fn distance(&self, pressed: u32) -> u32 {
+    fn distance(&self, pressed: u64) -> u64 {
         (self.0 - pressed) * pressed
     }
 
-    fn all_possibilities(&self) -> Vec<u32> {
+    fn all_possibilities(&self) -> Vec<u64> {
         (0..self.0).map(|t| self.distance(t)).collect_vec()
     }
 }
