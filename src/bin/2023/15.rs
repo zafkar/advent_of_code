@@ -15,7 +15,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         hash.push_str(&ins.label);
         match ins.action {
             InstructionAction::Append => {
-                hashmap.insert(hash.0, ins.focal);
+                //hashmap.insert(hash.0, ins.focal);
             }
             InstructionAction::Subtract => {}
         }
