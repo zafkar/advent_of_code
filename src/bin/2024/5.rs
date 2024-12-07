@@ -1,12 +1,6 @@
 use advent_of_code::load_data;
 use itertools::Itertools;
-use std::{
-    collections::HashMap,
-    error::Error,
-    fmt::Display,
-    io::{BufRead, Read},
-    str::FromStr,
-};
+use std::{collections::HashMap, error::Error, fmt::Display, io::Read};
 
 const ADVENT_NUM: &str = "2024/5";
 
