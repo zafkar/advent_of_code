@@ -4,7 +4,7 @@ use std::{error::Error, fmt::Display, io::BufRead, str::FromStr};
 const ADVENT_NUM: &str = "1";
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let file = load_data(ADVENT_NUM, "input.txt")?;
+    let file = load_data(ADVENT_NUM, "sample.txt")?;
     for line in file.lines() {
         let row: Row = line?.parse()?;
         println!("{row:?}");
@@ -24,6 +24,12 @@ impl FromStr for Row {
 
 #[derive(Debug)]
 struct GenericParseError(String);
+
+impl GenericParseError {
+    fn new(msg: &str) -> GenericParseError {
+        GenericParseError(msg.to_string())
+    }
+}
 
 impl Display for GenericParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
