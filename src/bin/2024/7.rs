@@ -17,7 +17,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     // }
 
     let part1_start = Instant::now();
-    let result_part1: i64 = equations
+    let result_part1: u64 = equations
         .par_iter()
         .filter(|e| e.can_be_valid())
         .map(|e| e.result)
@@ -34,8 +34,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 #[derive(Debug)]
 struct Equation {
-    result: i64,
-    terms: Vec<i64>,
+    result: u64,
+    terms: Vec<u64>,
 }
 
 impl Equation {
@@ -49,15 +49,26 @@ impl Equation {
     }
 
     fn is_valid(&self, operations: Vec<Operation>) -> bool {
-        let result = zip(self.terms[1..].iter(), operations.iter()).fold(
-            self.terms.first().unwrap().clone(),
-            |acc, (term, op)| match op {
+        let mut acc = match self.terms.first() {
+            Some(a) => *a,
+            None => return false,
+        };
+        for (term, op) in zip(self.terms[1..].iter(), operations.iter()) {
+            acc = match op {
                 Operation::Add => acc + term,
                 Operation::Mul => acc * term,
-            },
-        );
-        result == self.result
+                Operation::Concat => concat(acc, term),
+            };
+            if acc > self.result {
+                return false;
+            }
+        }
+        acc == self.result
     }
+}
+
+fn concat(l: u64, r: &u64) -> u64 {
+    (l.to_string() + &r.to_string()).parse().unwrap()
 }
 
 impl FromStr for Equation {
@@ -103,18 +114,27 @@ impl Error for GenericParseError {}
 enum Operation {
     Add,
     Mul,
+    Concat,
 }
 
 impl Operation {
-    fn generate_all_combinations(n: usize) -> Vec<Vec<Operation>> {
+    fn generate_all_combinations(
+        n: usize,
+    ) -> itertools::Combinations<
+        std::iter::FlatMap<
+            std::ops::Range<usize>,
+            Vec<Operation>,
+            impl FnMut(usize) -> Vec<Operation>,
+        >,
+    > {
         let single_set = Operation::one_off_all();
         (0..n)
-            .flat_map(|_| single_set.clone())
+            .flat_map(move |_| single_set.clone())
             .combinations(n)
-            .collect_vec()
+            .into_iter()
     }
 
     fn one_off_all() -> Vec<Operation> {
-        vec![Operation::Add, Operation::Mul]
+        vec![Operation::Add, Operation::Mul, Operation::Concat]
     }
 }
