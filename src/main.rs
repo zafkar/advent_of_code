@@ -1,7 +1,7 @@
-use advent_of_code::load_data;
-use std::{error::Error, fmt::Display, io::BufRead, str::FromStr};
+use advent_of_code::{load_data, AdventError};
+use std::{error::Error, io::BufRead, str::FromStr};
 
-const ADVENT_NUM: &str = "1";
+const ADVENT_NUM: &str = "2024/1";
 
 fn main() -> Result<(), Box<dyn Error>> {
     let file = load_data(ADVENT_NUM, "sample.txt")?;
@@ -16,25 +16,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 struct Row;
 
 impl FromStr for Row {
-    type Err = GenericParseError;
+    type Err = AdventError;
     fn from_str(_: &str) -> Result<Self, Self::Err> {
         Ok(Row)
     }
 }
-
-#[derive(Debug)]
-struct GenericParseError(String);
-
-impl GenericParseError {
-    fn new(msg: &str) -> GenericParseError {
-        GenericParseError(msg.to_string())
-    }
-}
-
-impl Display for GenericParseError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:?}", self)
-    }
-}
-
-impl Error for GenericParseError {}

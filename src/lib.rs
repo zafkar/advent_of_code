@@ -4,9 +4,11 @@ use std::{
 };
 
 mod direction;
+mod error;
 mod point;
 
 pub use direction::Direction;
+pub use error::AdventError;
 pub use point::Point;
 
 pub fn load_data(advent_num: &str, filename: &str) -> Result<BufReader<File>, Error> {
