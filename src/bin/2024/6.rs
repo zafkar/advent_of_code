@@ -1,9 +1,7 @@
-use advent_of_code::load_data;
+use advent_of_code::{load_data, Direction, Point};
 use itertools::Itertools;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use std::{
-    error::Error, fmt::Display, io::Read, ops::Add, str::FromStr, thread::sleep, time::Duration,
-};
+use std::{error::Error, fmt::Display, io::Read, str::FromStr};
 
 const ADVENT_NUM: &str = "2024/6";
 
@@ -43,74 +41,6 @@ fn count_loop_possibilities(original_grid: &Grid) -> usize {
         .count()
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-struct Point {
-    x: i64,
-    y: i64,
-}
-
-impl Add<Direction> for Point {
-    type Output = Point;
-    fn add(self, rhs: Direction) -> Self::Output {
-        let r = Point::from(rhs);
-        self + r
-    }
-}
-
-impl Add for Point {
-    type Output = Point;
-    fn add(self, rhs: Self) -> Self::Output {
-        Point {
-            x: self.x + rhs.x,
-            y: self.y + rhs.y,
-        }
-    }
-}
-
-impl PartialEq<(usize, usize)> for Point {
-    fn eq(&self, other: &(usize, usize)) -> bool {
-        self.x == other.0 as i64 && self.y == other.1 as i64
-    }
-}
-
-impl From<(usize, usize)> for Point {
-    fn from(value: (usize, usize)) -> Self {
-        Point {
-            x: value.0 as i64,
-            y: value.1 as i64,
-        }
-    }
-}
-
-impl From<(i32, i32)> for Point {
-    fn from(value: (i32, i32)) -> Self {
-        Point {
-            x: value.0 as i64,
-            y: value.1 as i64,
-        }
-    }
-}
-
-impl From<Direction> for Point {
-    fn from(value: Direction) -> Self {
-        match value {
-            Direction::North => (0, -1),
-            Direction::East => (1, 0),
-            Direction::South => (0, 1),
-            Direction::West => (-1, 0),
-        }
-        .into()
-    }
-}
-
-#[derive(Clone, Copy, PartialEq, Eq)]
-enum Direction {
-    North,
-    East,
-    South,
-    West,
-}
-
 #[derive(Clone, Copy, PartialEq, Eq)]
 struct Guard {
     pos: Point,
@@ -124,6 +54,7 @@ impl Guard {
             Direction::North => Direction::East,
             Direction::South => Direction::West,
             Direction::West => Direction::North,
+            _ => panic!("Should never be here"),
         }
     }
 }
@@ -135,6 +66,7 @@ impl Display for Guard {
             Direction::East => '>',
             Direction::South => 'v',
             Direction::West => '<',
+            _ => panic!("Should never be here"),
         };
         write!(f, "{}", dis_char)?;
         Ok(())
