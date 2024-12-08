@@ -7,7 +7,7 @@ const ADVENT_NUM: &str = "2023/15";
 fn main() -> Result<(), Box<dyn Error>> {
     let file = load_data(ADVENT_NUM, "sample.txt")?;
 
-    let mut hashmap = HashMap::new();
+    let _hashmap = HashMap::new();
     for line in file.split(b',') {
         let line = String::from_utf8(line?)?;
         let ins: Instruction = line.parse()?;
@@ -67,7 +67,7 @@ enum InstructionAction {
 struct Instruction {
     label: String,
     action: InstructionAction,
-    focal: Option<u8>,
+    _focal: Option<u8>,
 }
 
 #[derive(Debug)]
@@ -105,7 +105,7 @@ impl FromStr for Instruction {
             None => return Err(InstructionParseError),
         };
 
-        let focal = match action {
+        let _focal = match action {
             InstructionAction::Append => match caps.name("focal") {
                 Some(a) => Some(a.as_str().parse::<u8>().unwrap()),
                 None => return Err(InstructionParseError),
@@ -115,7 +115,7 @@ impl FromStr for Instruction {
 
         Ok(Instruction {
             action,
-            focal,
+            _focal,
             label,
         })
     }
@@ -123,6 +123,6 @@ impl FromStr for Instruction {
 
 #[derive(Debug, Clone)]
 struct Lens {
-    label: String,
-    focal: u8,
+    _label: String,
+    _focal: u8,
 }

@@ -1,6 +1,6 @@
 use advent_of_code::load_data;
-use itertools::{max, Itertools};
-use std::{error::Error, fmt::Display, io::Read, iter::zip, str::FromStr};
+use itertools::Itertools;
+use std::{error::Error, fmt::Display, io::Read, str::FromStr};
 
 const ADVENT_NUM: &str = "2022/8";
 
@@ -34,7 +34,7 @@ impl Grid {
         }
     }
 
-    fn is_visible(&self, x: usize, y: usize) -> bool {
+    fn _is_visible(&self, x: usize, y: usize) -> bool {
         if x == 0 || y == 0 || x == self.0 - 1 || y == self.1 - 1 {
             return true;
         }

@@ -1,6 +1,6 @@
 use advent_of_code::load_data;
 use itertools::Itertools;
-use std::{error::Error, fmt::Display, io::BufRead, iter::zip, str::FromStr};
+use std::{error::Error, fmt::Display, io::BufRead, iter::zip};
 
 const ADVENT_NUM: &str = "2023/6";
 
