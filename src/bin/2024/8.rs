@@ -12,7 +12,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     println!("{}", grid);
 
-    println!("");
+    println!();
 
     for pair in grid.get_all_antenna_pairs() {
         println!("{:?}", pair);
@@ -72,7 +72,7 @@ impl Grid {
 
     fn set_tile(&mut self, pos: Point, tile: TileState) {
         if pos.x >= self.width() as i64 || pos.x < 0 || pos.y < 0 || pos.y >= self.height() as i64 {
-            return ();
+            return ;
         }
         self.grid[pos.y as usize][pos.x as usize] = tile;
     }
@@ -123,7 +123,7 @@ impl Display for Grid {
             for (_x, state) in line.iter().enumerate() {
                 write!(f, "{}", state)?;
             }
-            writeln!(f, "")?;
+            writeln!(f)?;
         }
         for (freq, antennas) in self.antennas.iter() {
             for antenna in antennas.iter() {
@@ -145,7 +145,7 @@ impl FromStr for Grid {
                 let tile = match c {
                     '.' => TileState::Empty,
                     a => {
-                        antennas.entry(a).or_insert(vec![]).push((x, y).into());
+                        antennas.entry(a).or_default().push((x, y).into());
                         TileState::Empty
                     }
                 };

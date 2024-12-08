@@ -25,7 +25,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 .filter(|d| distance < **d)
                 .count()
         })
-        .fold(1, |acc, possibilites| acc * possibilites);
+        .product::<usize>();
 
     println!("{races:?}");
     Ok(())

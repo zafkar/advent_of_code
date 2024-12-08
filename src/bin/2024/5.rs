@@ -20,7 +20,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut rules = HashMap::new();
     for rule_line in rules_text.lines() {
-        let (k, v) = match rule_line.split_once("|") {
+        let (k, v) = match rule_line.split_once('|') {
             Some(a) => a,
             None => return Err(Box::new(GenericParseError("can't parse rule".to_string()))),
         };

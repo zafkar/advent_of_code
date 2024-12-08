@@ -16,7 +16,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         current_pat.push(line.clone());
     }
-    if current_pat.len() != 0 {
+    if !current_pat.is_empty() {
         patterns.push(Pattern(current_pat));
     }
 
@@ -78,7 +78,7 @@ fn full_sym(rows: &Vec<String>) -> Vec<usize> {
     }
     for line in rows.iter() {
         current_candidates = sym(line, current_candidates);
-        if current_candidates.len() == 0 {
+        if current_candidates.is_empty() {
             return vec![];
         }
     }

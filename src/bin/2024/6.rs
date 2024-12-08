@@ -6,7 +6,7 @@ use std::{error::Error, fmt::Display, io::Read, str::FromStr};
 const ADVENT_NUM: &str = "2024/6";
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let mut file = load_data(ADVENT_NUM, "input.txt")?;
+    let mut file = load_data(ADVENT_NUM, "sample.txt")?;
     let mut full_text = String::new();
     file.read_to_string(&mut full_text)?;
 
@@ -138,7 +138,7 @@ impl Grid {
             if guard_history.contains(&current_grid.guard) {
                 return true;
             }
-            guard_history.push(current_grid.guard.clone());
+            guard_history.push(current_grid.guard);
         }
         false
     }
@@ -154,7 +154,7 @@ impl Display for Grid {
                     write!(f, "{}", state)?;
                 }
             }
-            writeln!(f, "")?;
+            writeln!(f)?;
         }
         Ok(())
     }

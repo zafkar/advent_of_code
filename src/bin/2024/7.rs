@@ -131,7 +131,6 @@ impl Operation {
         (0..n)
             .flat_map(move |_| single_set.clone())
             .combinations(n)
-            .into_iter()
     }
 
     fn one_off_all() -> Vec<Operation> {

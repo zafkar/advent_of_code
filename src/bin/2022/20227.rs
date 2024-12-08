@@ -129,7 +129,7 @@ impl FromStr for Dir {
                 },
                 Ok(LineType::Dir(name)) => {
                     current_dir.try_borrow_mut().unwrap().add_dir(&name);
-                    ()
+                    
                 }
 
                 Ok(LineType::File(name, size)) => {
@@ -140,9 +140,9 @@ impl FromStr for Dir {
         }
         drop(parent_dir);
         if let Ok(root) = Rc::try_unwrap(root_rc) {
-            return Ok(root.into_inner());
+            Ok(root.into_inner())
         } else {
-            return Err(GenericParseError("Couldn't unwrap Rc".to_string()));
+            Err(GenericParseError("Couldn't unwrap Rc".to_string()))
         }
     }
 }
@@ -169,22 +169,22 @@ enum LineType {
 impl FromStr for LineType {
     type Err = GenericParseError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        if s.len() == 0 {
+        if s.is_empty() {
             return Ok(LineType::NewLine);
         }
 
         match &s[0..=0] {
             "$" => match &s[2..=2] {
-                "l" => return Ok(LineType::LsCommand),
-                "c" => return Ok(LineType::CdCommand(s[5..].to_string())),
-                _ => return Err(GenericParseError("Unknown Command".to_string())),
+                "l" => Ok(LineType::LsCommand),
+                "c" => Ok(LineType::CdCommand(s[5..].to_string())),
+                _ => Err(GenericParseError("Unknown Command".to_string())),
             },
-            "d" => return Ok(LineType::Dir(s[4..].to_string())),
+            "d" => Ok(LineType::Dir(s[4..].to_string())),
             _ => {
                 if let Some((left, right)) = s.split_once(' ') {
-                    return Ok(LineType::File(right.to_string(), left.parse().unwrap()));
+                    Ok(LineType::File(right.to_string(), left.parse().unwrap()))
                 } else {
-                    return Err(GenericParseError("Unknown LineType".to_string()));
+                    Err(GenericParseError("Unknown LineType".to_string()))
                 }
             }
         }

@@ -47,7 +47,7 @@ impl Grid {
 
         //println!("({x},{y}) => E({max_east}), N({max_north}), W({max_west}), S({max_south})");
         &target_size
-            > vec![max_east, max_west, max_south, max_north]
+            > [max_east, max_west, max_south, max_north]
                 .iter()
                 .min()
                 .unwrap_or(&-1)
@@ -89,7 +89,7 @@ impl Display for Grid {
             for x in 0..self.0 {
                 write!(f, "{};", self.score(x, y))?;
             }
-            writeln!(f, "")?;
+            writeln!(f)?;
         }
         Ok(())
     }
@@ -104,7 +104,7 @@ impl FromStr for Grid {
         let grid = i
             .chars()
             .filter(|c| c.is_numeric())
-            .map(|c| String::from(c))
+            .map(String::from)
             .map(|s| s.parse::<i8>().unwrap())
             .collect();
 

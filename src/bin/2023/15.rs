@@ -41,11 +41,11 @@ impl AdventHash {
         AdventHash(0)
     }
 
-    fn push(&mut self, c: char) -> () {
+    fn push(&mut self, c: char) {
         self.0 = ((self.0 as u16 + (c as u16)) * 17 % 256) as u8;
     }
 
-    fn push_vec(&mut self, bytes: &[u8]) -> () {
+    fn push_vec(&mut self, bytes: &[u8]) {
         for b in bytes {
             if *b == b'\n' {
                 continue;
@@ -54,7 +54,7 @@ impl AdventHash {
         }
     }
 
-    fn push_str(&mut self, s: &str) -> () {
+    fn push_str(&mut self, s: &str) {
         self.push_vec(s.as_bytes())
     }
 }

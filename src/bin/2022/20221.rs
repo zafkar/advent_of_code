@@ -11,7 +11,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     for line in file.lines() {
         let line = line?;
 
-        if line.len() == 0 {
+        if line.is_empty() {
             elves.push(current_elf);
             current_elf = 0;
             continue;

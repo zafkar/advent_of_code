@@ -120,7 +120,7 @@ impl Display for Stacks {
                     write!(f, "    ")?;
                 }
             }
-            write!(f, "\n")?;
+            writeln!(f)?;
         }
         for i in 1..=self.0.len() {
             write!(f, " {i}  ",)?;
@@ -134,7 +134,7 @@ impl FromStr for Stacks {
     type Err = GenericParseError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut stacks = Stacks(Vec::new());
-        let num_stacks = match s.lines().rev().next() {
+        let num_stacks = match s.lines().last() {
             Some(last_line) => last_line
                 .split_whitespace()
                 .last()

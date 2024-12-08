@@ -6,8 +6,8 @@ const ADVENT_NUM: &str = "2022/3";
 fn char2priority(c: char) -> u32 {
     let integer: u32 = c.into();
     match integer {
-        a if a <= 122 && a >= 97 => a - 96,
-        a if a <= 90 && a >= 65 => a - 38,
+        a if (97..=122).contains(&a) => a - 96,
+        a if (65..=90).contains(&a) => a - 38,
         _ => 0,
     }
 }
@@ -36,7 +36,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         ),
     )
     .map(|(a, (b, c))| a.find_badge(b, c).unwrap())
-    .map(|badge| char2priority(badge))
+    .map(char2priority)
     .sum();
 
     println!("{result}");
