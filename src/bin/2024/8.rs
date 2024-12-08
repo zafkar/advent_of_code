@@ -162,8 +162,16 @@ impl Grid {
     fn update_antinodes(&mut self) {
         for (_, left, right) in self.clone().get_all_antenna_pairs() {
             let distance = left - right;
-            self.set_tile(right - distance, TileState::Antinode);
-            self.set_tile(left + distance, TileState::Antinode);
+            let mut mult = 0;
+            while self.is_within_bound(left + distance * mult) {
+                self.set_tile(left + distance * mult, TileState::Antinode);
+                mult += 1;
+            }
+            mult = -1;
+            while self.is_within_bound(left + distance * mult) {
+                self.set_tile(left + distance * mult, TileState::Antinode);
+                mult -= 1;
+            }
         }
     }
 
