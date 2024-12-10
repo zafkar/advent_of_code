@@ -100,6 +100,18 @@ name = "2024_1"
 path = "src/bin/2024/1.rs"
 
 [[bin]]
+name = "2024_2"
+path = "src/bin/2024/2.rs"
+
+[[bin]]
+name = "2024_3"
+path = "src/bin/2024/3.rs"
+
+[[bin]]
+name = "2024_4"
+path = "src/bin/2024/4.rs"
+
+[[bin]]
 name = "2024_5"
 path = "src/bin/2024/5.rs"
 
