@@ -14,6 +14,17 @@ pub enum Direction {
     NorthWest,
 }
 
+impl Direction {
+    pub fn get_ortho() -> Vec<Direction> {
+        vec![
+            Direction::North,
+            Direction::East,
+            Direction::South,
+            Direction::West,
+        ]
+    }
+}
+
 impl Add<Direction> for Point {
     type Output = Point;
     fn add(self, rhs: Direction) -> Self::Output {

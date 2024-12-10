@@ -1,6 +1,9 @@
-use std::ops::{Add, Mul, Sub};
+use std::{
+    hash::Hash,
+    ops::{Add, Mul, Sub},
+};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Point {
     pub x: i64,
     pub y: i64,
